@@ -4,15 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-class VisaTypes extends Model
+class ClientPackage extends Model
 {
     use HasFactory;
-protected $table = 'visa_types';
+protected $table = 'packages';
    protected $fillable = [
-        'id',
-       'text',
-       'value',
-       'price'
+          'id',
+          'name',
+          'description',
+          'price'
     ];
 }
-             

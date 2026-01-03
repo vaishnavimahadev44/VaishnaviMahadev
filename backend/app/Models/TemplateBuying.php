@@ -12,8 +12,7 @@ protected $table = 'template_buying';
         'id',
         'template_name',
         'template_price',
-        'description',
-        'created_at'
+        'description'
     ];
 }
              

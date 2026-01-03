@@ -14,8 +14,7 @@ protected $table = 'evisa';
         'applicant_name',
         'country',
         'visa_type',
-        'status',
-        'created_at'
+        'status'
     ];
 }
              

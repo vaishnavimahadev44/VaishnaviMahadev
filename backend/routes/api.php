@@ -3,7 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DeleteController;
-use App\Http\Controllers\PostController;
+use App\Http\Controllers\EvisaController;
+use App\Http\Controllers\PackageController;
+use App\Http\Controllers\TemplateBuyingController;
+use App\Http\Controllers\VisaTypeController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -24,7 +27,7 @@ Route::get('/users', function () {
         'data' => []
     ]);
 });
-Route::post(uri:'/crm',action:[PostController::class, 'storeVisa']);
+
 // Delete API Routes - 16 Delete Operations
 Route::delete('/users/{id}', [DeleteController::class, 'deleteUser']);
 Route::delete('/applications/{id}', [DeleteController::class, 'deleteApplication']);
@@ -43,3 +46,11 @@ Route::delete('/vendors/{id}', [DeleteController::class, 'deleteVendor']);
 Route::delete('/assets/{id}', [DeleteController::class, 'deleteAsset']);
 Route::delete('/audit-logs/{id}', [DeleteController::class, 'deleteAuditLog']);
 
+// API Routes for evisa
+Route::resource('/evisa', EvisaController::class);
+// API Routes for package
+Route::resource('/package', PackageController::class);
+// API Routes for template
+Route::resource('/template-buying', TemplateBuyingController::class);
+// API Routes for visa type
+Route::resource('/visa-type', VisaTypeController::class);
