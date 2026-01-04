@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="auth.js" defer></script>
+    
+    <style>
+        :root {
+            --primary: #0a2540;
+            --secondary: #6366f1;
+            --light: #ffffff;
+            --off-white: #f8fafc;
+            --gray: #64748b;
+            --error: #ef4444;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            background: var(--light);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        .login-header {
+            padding: 1.5rem 2rem;
+            background: var(--off-white);
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .login-header h1 {
+            margin: 0;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+        }
+        .login-body {
+            padding: 1.75rem 2rem 2rem;
+        }
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; font-weight: 600; margin-bottom: 0.5rem; }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: box-shadow .2s, border-color .2s;
+        }
+        input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+        }
+        .btn {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: none;
+            border-radius: 10px;
+            background: var(--primary);
+            color: var(--light);
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform .15s ease, background .2s ease;
+        }
+        .btn:hover { transform: translateY(-1px); }
+        .error { color: var(--error); font-size: 0.95rem; margin-bottom: 0.75rem; display: none; }
+        .helper { color: var(--gray); font-size: 0.9rem; margin-top: 0.75rem; text-align: center; }
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        /* Reduce motion to avoid subtle jitter on hover */
+        @media (prefers-reduced-motion: reduce) {
+            .btn { transition: none; }
+            .btn:hover { transform: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="login-header">
+            <h1><i class="fa-solid fa-shield"></i> Admin Login</h1>
+        </div>
+        <div class="login-body">
+            <div id="errorMsg" class="error"></div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input id="username" name="username" type="text" autocomplete="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input id="password" name="password" type="password" autocomplete="current-password" required>
+                </div>
+                <button class="btn" type="submit">Sign in</button>
+            </form>
+            <div class="helper">Hint: admin / admin123</div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            function getQueryParam(name) {
+                var params = new URLSearchParams(window.location.search);
+                return params.get(name);
+            }
+
+            function isSamePage(url) {
+                try {
+                    var u = new URL(url, window.location.origin);
+                    return u.pathname === window.location.pathname;
+                } catch (e) { return false; }
+            }
+
+            function safeRedirect(target) {
+                if (!target || isSamePage(target)) {
+                    window.location.replace('Admin (3).html');
+                } else {
+                    window.location.replace(target);
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                try {
+                    if (window.Auth && typeof window.Auth.isAuthenticated === 'function' && window.Auth.isAuthenticated()) {
+                        var nextUrl = getQueryParam('next');
+                        safeRedirect(nextUrl ? decodeURIComponent(nextUrl) : 'AdminPanel.html');
+                        return;
+                    }
+                } catch (e) {}
+
+                var form = document.getElementById('loginForm');
+                var errorMsg = document.getElementById('errorMsg');
+
+                if (!form) return;
+
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    errorMsg.style.display = 'none';
+                    var username = document.getElementById('username').value.trim();
+                    var password = document.getElementById('password').value;
+                    
+                    if (!window.Auth || typeof window.Auth.login !== 'function') {
+                        errorMsg.textContent = 'Auth module not loaded.';
+                        errorMsg.style.display = 'block';
+                        return;
+                    }
+
+                    window.Auth.login(username, password)
+                        .then(function() {
+                            var next = getQueryParam('next');
+                            var target = next ? decodeURIComponent(next) : 'AdminPanel.html';
+                            try { sessionStorage.setItem('justLoggedIn', '1'); } catch (e) {}
+                            safeRedirect(target);
+                        })
+                        .catch(function(err) {
+                            errorMsg.textContent = err && err.message ? err.message : 'Login failed';
+                            errorMsg.style.display = 'block';
+                        });
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
+
+ 

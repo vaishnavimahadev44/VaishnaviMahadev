@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Templates & Packages - ICS LEGAL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.paypal.com/sdk/js?client-id=AdlV7G8VvGHjtfSf2Mf77GNbYFb9kGEX8b2-tV6urOW0xqr8XATjdnlw8cRY4JopgaCLkwVHvc06dwsf&currency=GBP"></script>
+    <style>
+        :root {
+            --primary: #0a2540;
+            --primary-light: #1e3a8a;
+            --secondary: #6366f1;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --dark: #0f172a;
+            --dark-gray: #475569;
+            --gray: #64748b;
+            --light-gray: #94a3b8;
+            --lighter-gray: #e2e8f0;
+            --light: #ffffff;
+            --off-white: #f8fafc;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --gradient-light: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--light);
+            color: var(--primary);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .chat-modal {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(10, 37, 64, 0.95), rgba(30, 58, 138, 0.95));
+            backdrop-filter: blur(20px);
+            z-index: 10000;
+            animation: modalFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .chat-container {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: none;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .chat-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.3), transparent);
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: #ffffff;
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .chat-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(99, 102, 241, 0.15), rgba(16, 185, 129, 0.15));
+            pointer-events: none;
+        }
+
+        .chat-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        }
+
+        .chat-header h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            letter-spacing: 0.025em;
+        }
+
+        .chat-header h3 i {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .chat-header .close-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .chat-header .close-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.4);
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .chat-body {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%);
+            position: relative;
+            scroll-behavior: smooth;
+        }
+
+        .chat-body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-body::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 3px;
+        }
+
+        .chat-body::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 3px;
+        }
+
+        .chat-body::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        }
+
+        .chat-body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="%23e2e8f0" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .chat-messages {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .message {
+            display: flex;
+            gap: 1rem;
+            animation: messageSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 1.5rem;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .message.bot .message-avatar {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #ffffff;
+        }
+
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #ffffff;
+        }
+
+        .message-content {
+            max-width: 75%;
+            padding: 1.25rem 1.5rem;
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(10px);
+        }
+
+        .message.bot .message-content {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            color: #1e293b;
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #ffffff;
+            border: none;
+        }
+
+        .message-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .message-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(226, 232, 240, 0.8);
+            border-radius: 16px;
+            padding: 1rem 1.25rem;
+            color: #1e293b;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: left;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .option-btn:hover::before {
+            left: 100%;
+        }
+
+        .option-btn:hover {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #ffffff;
+            border-color: #6366f1;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+        }
+
+        .option-btn.selected {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #ffffff;
+            border-color: #10b981;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899);
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 0 0 3px 0;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+        }
+
+        .step-indicator {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            letter-spacing: 0.025em;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 0.25rem;
+            padding: 1rem;
+            align-items: center;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--gray);
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typing {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes messageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .template-card {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .template-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            border-color: #6366f1;
+        }
+
+        .template-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .template-card:hover::before {
+            left: 100%;
+        }
+
+        .template-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .template-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0;
+        }
+
+        .template-price {
+            background: linear-gradient(135deg, #059669, #047857);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .template-description {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .template-features {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .template-features li {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .template-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .purchase-form {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 1rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .payment-method-btn {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            color: #374151;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .payment-method-btn.active {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+            border-color: #6366f1;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+        }
+
+        .action-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+        }
+
+        .action-btn.secondary {
+            background: white;
+            color: #374151;
+            border: 2px solid #e2e8f0;
+        }
+
+        .action-btn.secondary:hover {
+            background: #f8fafc;
+            border-color: #6366f1;
+        }
+
+        @media (max-width: 768px) {
+            .chat-header, .chat-body {
+                padding: 1rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .payment-methods {
+                flex-direction: column;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-modal">
+        <div class="chat-container">
+            <div class="progress-bar" id="progressBar"></div>
+            <div class="step-indicator" id="stepIndicator">Step 1 of 5</div>
+            <div class="chat-header">
+                <h3>
+                    <i class="fas fa-shopping-cart"></i>
+                    Templates & Packages Builder
+                </h3>
+                <button class="close-btn" id="closeChat">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chat-body">
+                <div class="chat-messages" id="chatMessages">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chatMessages = document.getElementById('chatMessages');
+        const progressBar = document.getElementById('progressBar');
+        const stepIndicator = document.getElementById('stepIndicator');
+        const closeChat = document.getElementById('closeChat');
+        
+        let currentStep = 1;
+        let userResponses = {};
+        let isTyping = false;
+
+       
+        const templatesData = {
+            initialNeeds: [
+                { id: 'template', text: 'Need a template', description: 'Application forms and document templates' },
+                { id: 'documents', text: 'Need to know what documents to provide', description: 'Document checklist and requirements' },
+                { id: 'business_plan', text: 'Need a business plan?', description: 'Business plan templates and guidance' },
+                { id: 'cover_letter', text: 'Need a legal cover letter to support the visa application?', description: 'Professional cover letter templates' },
+                { id: 'check_form', text: 'Please check my visa form and documents.', description: 'Document review and verification service' }
+            ],
+            userTypes: [
+                { id: 'individual', text: 'Individual', description: 'Personal visa applications' },
+                { id: 'entrepreneur', text: 'Entrepreneur or business person', description: 'Business and investment visas' },
+                { id: 'business', text: 'Business or organisation', description: 'Corporate visa applications' }
+            ],
+            applicationStatus: [
+                { id: 'yes', text: 'Yes', description: 'Application refused or challenging decision' },
+                { id: 'no', text: 'No', description: 'New application or no previous issues' }
+            ],
+            documentDiscussion: [
+                { id: 'yes', text: 'Yes', description: 'Discuss documents and requirements' },
+                { id: 'no', text: 'No', description: 'No document discussion needed' }
+            ]
+        };
+
+    
+        function initChat() {
+            currentStep = 1;
+            userResponses = {};
+            chatMessages.innerHTML = '';
+            updateProgress();
+            showWelcomeMessage();
+        }
+
+        function updateProgress() {
+            const progress = (currentStep / 5) * 100;
+            progressBar.style.width = progress + '%';
+            stepIndicator.textContent = `Step ${currentStep} of 5`;
+        }
+
+        function showTyping() {
+            if (isTyping) return;
+            isTyping = true;
+            
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message bot';
+            typingDiv.id = 'typing-indicator';
+            typingDiv.innerHTML = `
+                <div class="message-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-content">
+                    <div class="typing-indicator">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <span style="margin-left: 0.5rem; color: #64748b;">Typing...</span>
+                    </div>
+                </div>
+            `;
+            chatMessages.appendChild(typingDiv);
+            scrollToBottom();
+        }
+
+        function hideTyping() {
+            const typingIndicator = document.getElementById('typing-indicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+            isTyping = false;
+        }
+
+        function addBotMessage(text, options = null, customContent = null) {
+            hideTyping();
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message bot';
+            
+            let content = `
+                <div class="message-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-content">
+                    <div class="message-text">${text}</div>
+            `;
+            
+            if (customContent) {
+                content += customContent;
+            }
+            
+            if (options) {
+                content += '<div class="message-options">';
+                options.forEach(option => {
+                    content += `<button class="option-btn" onclick="selectOption('${option.value}')">${option.text}</button>`;
+                });
+                content += '</div>';
+            }
+            
+            content += '</div>';
+            messageDiv.innerHTML = content;
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        function addUserMessage(text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message user';
+            messageDiv.innerHTML = `
+                <div class="message-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="message-content">
+                    <div class="message-text">${text}</div>
+                </div>
+            `;
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        function scrollToBottom() {
+            const chatBody = document.querySelector('.chat-body');
+            chatBody.scrollTo({
+                top: chatBody.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+
+        function showWelcomeMessage() {
+            setTimeout(() => {
+                addBotMessage(
+                    "Hey, hope you're well. Let's help you package your UK visa program. All information provided is secure. You can always click to go back and make changes to your selections.",
+                    templatesData.initialNeeds.map(need => ({
+                        text: need.text,
+                        value: need.id
+                    }))
+                );
+            }, 500);
+        }
+
+        function selectOption(value) {
+            const optionButtons = document.querySelectorAll('.option-btn');
+            optionButtons.forEach(btn => btn.classList.remove('selected'));
+            event.target.classList.add('selected');
+            
+            userResponses[`step${currentStep}`] = value;
+            addUserMessage(event.target.textContent);
+            
+            setTimeout(() => {
+                processStep();
+            }, 200);
+        }
+
+        function processStep() {
+            showTyping();
+            setTimeout(() => {
+                switch(currentStep) {
+                    case 1:
+                        handleStep1();
+                        break;
+                    case 2:
+                        handleStep2();
+                        break;
+                    case 3:
+                        handleStep3();
+                        break;
+                    case 4:
+                        handleStep4();
+                        break;
+                    case 5:
+                        handleStep5();
+                        break;
+                }
+            }, 300);
+        }
+
+        function handleStep1() {
+            currentStep = 2;
+            updateProgress();
+            
+            addBotMessage(
+                "Thank you. So let's help you find the right products. Are you?",
+                templatesData.userTypes.map(type => ({
+                    text: type.text,
+                    value: type.id
+                }))
+            );
+        }
+
+        function handleStep2() {
+            currentStep = 3;
+            updateProgress();
+            
+            addBotMessage(
+                "Is your matter related to an application being refused or intend to challenge against a decision.",
+                templatesData.applicationStatus.map(status => ({
+                    text: status.text,
+                    value: status.id
+                }))
+            );
+        }
+
+        function handleStep3() {
+            currentStep = 4;
+            updateProgress();
+            
+            addBotMessage(
+                "Do you wish to discuss about documents including assessing the documents required for an application or if refused, for us to check those?",
+                templatesData.documentDiscussion.map(discussion => ({
+                    text: discussion.text,
+                    value: discussion.id
+                }))
+            );
+        }
+
+        function handleStep4() {
+            currentStep = 5;
+            updateProgress();
+            
+         
+            const recommendations = generateRecommendations();
+            
+            const recommendationsHTML = `
+                <div style="background: white; padding: 1.5rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #e2e8f0;">
+                    <h4 style="margin-bottom: 1rem; color: #1e293b; font-weight: 600;">Recommended Templates & Packages</h4>
+                    ${recommendations.map(rec => `
+                        <div class="template-card" onclick="selectTemplate('${rec.id}')">
+                            <div class="template-header">
+                                <h5 class="template-title">${rec.name}</h5>
+                                <span class="template-price">£${rec.price}</span>
+                            </div>
+                            <p class="template-description">${rec.description}</p>
+                            <ul class="template-features">
+                                ${rec.features.map(feature => `<li>${feature}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            addBotMessage(
+                "A few more details to help us build your application? Here are our recommended templates and packages based on your needs:",
+                null,
+                recommendationsHTML
+            );
+        }
+
+        function handleStep5() {
+            updateProgress();
+            
+            addBotMessage(
+                "Perfect! Your template package has been customized based on your requirements. Would you like to proceed with the purchase or need any modifications?",
+                [
+                    { text: "Proceed to Purchase", value: "purchase" },
+                    { text: "Modify Selection", value: "modify" },
+                    { text: "Start Over", value: "restart" }
+                ]
+            );
+        }
+
+        function generateRecommendations() {
+            const recommendations = [];
+            
+          
+            recommendations.push({
+                id: 'basic_package',
+                name: 'Basic Template Package',
+                price: 99,
+                description: 'Essential templates for your visa application',
+                features: [
+                    'Application form templates',
+                    'Document checklist',
+                    'Basic guidance notes',
+                    'Email support'
+                ]
+            });
+            
+            
+            if (userResponses.step1 === 'business_plan') {
+                recommendations.push({
+                    id: 'business_package',
+                    name: 'Business Plan Package',
+                    price: 199,
+                    description: 'Comprehensive business plan templates and guidance',
+                    features: [
+                        'Business plan templates',
+                        'Financial projections',
+                        'Market analysis guides',
+                        'Investment strategy templates'
+                    ]
+                });
+            }
+            
+            if (userResponses.step1 === 'cover_letter') {
+                recommendations.push({
+                    id: 'legal_package',
+                    name: 'Legal Cover Letter Package',
+                    price: 149,
+                    description: 'Professional legal cover letter templates',
+                    features: [
+                        'Cover letter templates',
+                        'Legal argument frameworks',
+                        'Case law references',
+                        'Professional formatting'
+                    ]
+                });
+            }
+            
+            if (userResponses.step3 === 'yes') {
+                recommendations.push({
+                    id: 'premium_package',
+                    name: 'Premium Document Review Package',
+                    price: 299,
+                    description: 'Complete document review and verification service',
+                    features: [
+                        'Document review service',
+                        'Error checking',
+                        'Compliance verification',
+                        'Priority support'
+                    ]
+                });
+            }
+            
+            return recommendations;
+        }
+
+        function selectTemplate(templateId) {
+            userResponses.selectedTemplate = templateId;
+            addUserMessage(`Selected template: ${templateId}`);
+            
+            setTimeout(() => {
+                showPurchaseForm(templateId);
+            }, 200);
+        }
+
+        function showPurchaseForm(templateId) {
+            const template = findTemplateById(templateId);
+            if (!template) return;
+            
+            const purchaseFormHTML = `
+                <div class="purchase-form">
+                    <h4 style="margin-bottom: 1.5rem; color: #1e293b; font-weight: 600;">Complete Your Purchase</h4>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Full Name *</label>
+                            <input type="text" id="fullName" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address *</label>
+                            <input type="email" id="email" placeholder="Enter your email address" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Phone Number *</label>
+                            <input type="tel" id="phone" placeholder="Enter your phone number" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Country</label>
+                            <input type="text" id="country" placeholder="Enter your country">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Additional Requirements</label>
+                        <textarea id="requirements" rows="3" placeholder="Any specific requirements or questions..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Payment Method</label>
+                        <div class="payment-methods">
+                            <button class="payment-method-btn active" onclick="selectPaymentMethod('paypal')">
+                                <i class="fab fa-paypal"></i>
+                                PayPal
+                            </button>
+                            <button class="payment-method-btn" onclick="selectPaymentMethod('card')">
+                                <i class="fas fa-credit-card"></i>
+                                Credit Card
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="action-btn primary" onclick="processPurchase()">
+                            <i class="fas fa-lock"></i>
+                            Pay Securely £${template.price}
+                        </button>
+                        <button class="action-btn secondary" onclick="restartChat()">
+                            <i class="fas fa-redo"></i>
+                            Start Over
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            addBotMessage(
+                "Please provide your details to complete the purchase:",
+                null,
+                purchaseFormHTML
+            );
+        }
+
+        function findTemplateById(templateId) {
+            const recommendations = generateRecommendations();
+            return recommendations.find(rec => rec.id === templateId);
+        }
+
+        function selectPaymentMethod(method) {
+            const buttons = document.querySelectorAll('.payment-method-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function processPurchase() {
+            const fullName = document.getElementById('fullName')?.value?.trim();
+            const email = document.getElementById('email')?.value?.trim();
+            const phone = document.getElementById('phone')?.value?.trim();
+            
+            if (!fullName || !email || !phone) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            addUserMessage('Processing payment...');
+            
+            setTimeout(() => {
+                addBotMessage(
+                    `<div style="background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 1px solid #bbf7d0; padding: 1.5rem; border-radius: 12px; margin-bottom: 1rem;">
+                        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                            <div style="background: #10b981; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div>
+                                <h4 style="color: #1e293b; font-weight: 600; margin: 0;">Purchase Successful!</h4>
+                                <p style="color: #64748b; margin: 0; font-size: 0.9rem;">Your templates will be delivered to your email shortly</p>
+                            </div>
+                        </div>
+                        <div style="background: white; padding: 1rem; border-radius: 8px; border: 1px solid #bbf7d0;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span style="color: #64748b;">Order ID:</span>
+                                <span style="font-weight: 600; color: #1e293b;">TMP-${Date.now().toString().slice(-8)}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span style="color: #64748b;">Status:</span>
+                                <span style="color: #10b981; font-weight: 600;">Completed</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: #64748b;">Delivery:</span>
+                                <span style="font-weight: 600; color: #1e293b;">Email within 24 hours</span>
+                            </div>
+                        </div>
+                    </div>`,
+                    [
+                        { text: "Buy More Templates", value: "buy_more" },
+                        { text: "Start New Chat", value: "new_chat" }
+                    ]
+                );
+            }, 2000);
+        }
+
+        function restartChat() {
+            initChat();
+        }
+
+       
+        if (closeChat) {
+            closeChat.addEventListener('click', function() {
+             
+                window.location.href = 'index.html';
+            });
+        }
+
+       
+        document.addEventListener('DOMContentLoaded', function() {
+            initChat();
+        });
+
+    
+        window.selectOption = selectOption;
+        window.selectTemplate = selectTemplate;
+        window.selectPaymentMethod = selectPaymentMethod;
+        window.processPurchase = processPurchase;
+        window.restartChat = restartChat;
+    </script>
+</body>
+</html> 
