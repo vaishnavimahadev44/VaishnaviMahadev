@@ -409,7 +409,7 @@
     </div>
 
     <div class="back-to-home">
-        <a href="index (4).html">
+        <a href="index.html">
             <i class="fas fa-arrow-left"></i>
             <span>Back to Home</span>
         </a>
@@ -498,15 +498,15 @@
             const clientIdInput = document.getElementById('clientId');
             const passwordInput = document.getElementById('password');
 
-            // Handle form submission
+            
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
-                // Hide previous errors
+               
                 errorMsg.classList.remove('show');
                 errorMsg.textContent = '';
                 
-                // Disable button during submission
+              
                 loginBtn.disabled = true;
                 loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
 
@@ -522,10 +522,13 @@
                         if (rememberMe) {
                             try {
                                 localStorage.setItem('clientId', clientId);
-                            } catch(e) {}
+                            } catch(e) {
+                               
+                            }
                         }
 
-                        window.location.href = 'https://staginglegalcms.techics.com/client/my-profile.php?mem_id=' + encodeURIComponent(clientId);
+                        const baseUrl = (window.location.protocol === 'file:' || window.location.hostname === '') ? 'http://localhost:8000' : window.location.origin;
+                        window.location.href = baseUrl + '/my-profile.php?mem_id=' + encodeURIComponent(clientId);
                     } else {
                         showError('Please enter both Client ID and Password');
                         loginBtn.disabled = false;
@@ -552,7 +555,9 @@
                         clientIdInput.value = savedClientId;
                         document.getElementById('rememberMe').checked = true;
                     }
-                } catch(e) {}
+                } catch(e) {
+                    
+                }
             });
 
            
