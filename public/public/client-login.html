@@ -527,8 +527,7 @@
                             }
                         }
 
-                        const baseUrl = (window.location.protocol === 'file:' || window.location.hostname === '') ? 'http://localhost:8000' : window.location.origin;
-                        window.location.href = baseUrl + '/my-profile.php?mem_id=' + encodeURIComponent(clientId);
+                        window.location.href = 'https://staginglegalcms.techics.com/client/my-profile.php?mem_id=' + encodeURIComponent(clientId);
                     } else {
                         showError('Please enter both Client ID and Password');
                         loginBtn.disabled = false;

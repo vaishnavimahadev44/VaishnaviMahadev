@@ -57,19 +57,20 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #ffffff;
+            background: linear-gradient(135deg, rgba(10, 37, 64, 0.95), rgba(30, 58, 138, 0.95));
+            backdrop-filter: blur(20px);
             z-index: 10000;
             animation: modalFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .chat-container {
-            background: #ffffff;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
             border-radius: 0;
             width: 100%;
             height: 100vh;
             display: flex;
             flex-direction: column;
-            box-shadow: none;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             border: none;
             overflow: hidden;
             position: relative;
@@ -86,22 +87,38 @@
         }
 
         .chat-header {
-            background: #ffffff;
-            color: #000000;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: #ffffff;
             padding: 1.5rem 2rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
             overflow: hidden;
-        }
-        
-        .chat-header h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
+            backdrop-filter: blur(10px);
         }
 
+        .chat-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(99, 102, 241, 0.15), rgba(16, 185, 129, 0.15));
+            pointer-events: none;
+        }
+
+        .chat-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        }
 
         .chat-header h3 {
             font-size: 1.1rem;
@@ -112,11 +129,17 @@
             letter-spacing: 0.025em;
         }
 
+        .chat-header h3 i {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
         .chat-header .close-btn {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            color: #000000;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
             width: 36px;
             height: 36px;
             border-radius: 12px;
@@ -126,18 +149,21 @@
             align-items: center;
             justify-content: center;
             font-size: 1rem;
+            backdrop-filter: blur(10px);
         }
 
         .chat-header .close-btn:hover {
-            background: #e2e8f0;
-            border-color: #cbd5e1;
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.4);
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
         }
 
         .chat-body {
             flex: 1;
             padding: 2rem;
             overflow-y: auto;
-            background: #ffffff;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%);
             position: relative;
             scroll-behavior: smooth;
         }
@@ -160,6 +186,17 @@
             background: linear-gradient(135deg, #4f46e5, #7c3aed);
         }
 
+        .chat-body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="%23e2e8f0" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+            pointer-events: none;
+        }
 
         .chat-messages {
             display: flex;
@@ -167,7 +204,6 @@
             gap: 1.5rem;
             position: relative;
             z-index: 1;
-            align-items: flex-start;
         }
 
         .message {
@@ -178,123 +214,137 @@
         }
 
         .message.user {
-            flex-direction: row;
+            flex-direction: row-reverse;
         }
 
         .message-avatar {
-            display: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .message.bot .message-avatar {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #ffffff;
+        }
+
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #ffffff;
         }
 
         .message-content {
-            max-width: 100%;
-            width: 100%;
-            padding: 0;
-            border-radius: 0;
+            max-width: 75%;
+            padding: 1.25rem 1.5rem;
+            border-radius: 20px;
             position: relative;
-            box-shadow: none;
-            backdrop-filter: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(10px);
         }
 
         .message.bot .message-content {
-            background: transparent;
-            border: none;
-            color: #000000;
-            box-shadow: none;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            color: #1e293b;
         }
 
         .message.user .message-content {
-            background: transparent;
-            color: #000000;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #ffffff;
             border: none;
-        }
-        
-        .message.user .message-text {
-            background: #F08E42;
-            color: #000000;
-            border: 1px solid #000000;
-            border-radius: 12px;
-            padding: 1rem 1.25rem;
-            display: inline-block;
         }
 
         .message-text {
             font-size: 1rem;
             line-height: 1.6;
-            margin-bottom: 1rem;
-        }
-        
-        .message-text strong {
-            font-weight: 700;
-        }
-        
-        .message.bot .message-text {
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
 
         .message-options {
             display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
+            flex-direction: column;
             gap: 0.75rem;
-            margin-top: 0.5rem;
-        }
-        
-        .message-options .option-btn {
-            flex: 1;
-            min-width: 150px;
-        }
-        
-        @media (max-width: 768px) {
-            .message-options {
-                flex-direction: column;
-            }
-            
-            .message-options .option-btn {
-                width: 100%;
-            }
+            margin-top: 1rem;
         }
 
         .option-btn {
-            background: #F08E42;
-            border: 1px solid #000000;
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(226, 232, 240, 0.8);
+            border-radius: 16px;
             padding: 1rem 1.25rem;
-            color: #000000;
+            color: #1e293b;
             font-size: 0.95rem;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: left;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             position: relative;
             overflow: hidden;
         }
 
+        .option-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .option-btn:hover::before {
+            left: 100%;
+        }
+
         .option-btn:hover {
-            background: #e67e35;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #ffffff;
+            border-color: #6366f1;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
         }
 
         .option-btn.selected {
-            background: #d46e28;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-        }
-        
-        .message-text {
-            color: #000000;
-        }
-        
-        .message-text u {
-            text-decoration: underline;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #ffffff;
+            border-color: #10b981;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
         }
 
         .progress-bar {
-            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899);
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 0 0 3px 0;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
         }
 
         .step-indicator {
-            display: none;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            letter-spacing: 0.025em;
         }
 
         .typing-indicator {
@@ -573,10 +623,12 @@
 <body>
     <div class="chat-modal">
         <div class="chat-container">
+            <div class="progress-bar" id="progressBar"></div>
+            <div class="step-indicator" id="stepIndicator">Step 1 of 5</div>
             <div class="chat-header">
                 <h3>
                     <i class="fas fa-shopping-cart"></i>
-                    WORKFLOW OF TEMPLATE/PACKAGE BUILDER [1]
+                    Templates & Packages Builder
                 </h3>
                 <button class="close-btn" id="closeChat">
                     <i class="fas fa-times"></i>
@@ -611,7 +663,7 @@
             ],
             userTypes: [
                 { id: 'individual', text: 'Individual', description: 'Personal visa applications' },
-                { id: 'entrepreneur', text: 'Entrepreneur or <u>business person</u>', description: 'Business and investment visas' },
+                { id: 'entrepreneur', text: 'Entrepreneur or business person', description: 'Business and investment visas' },
                 { id: 'business', text: 'Business or organisation', description: 'Corporate visa applications' }
             ],
             applicationStatus: [
@@ -647,7 +699,7 @@
             typingDiv.className = 'message bot';
             typingDiv.id = 'typing-indicator';
             typingDiv.innerHTML = `
-                <div class="message-avatar" style="display: none;">
+                <div class="message-avatar">
                     <i class="fas fa-robot"></i>
                 </div>
                 <div class="message-content">
@@ -678,11 +730,11 @@
             messageDiv.className = 'message bot';
             
             let content = `
-                <div class="message-avatar" style="display: none;">
+                <div class="message-avatar">
                     <i class="fas fa-robot"></i>
                 </div>
                 <div class="message-content">
-                    ${text ? `<div class="message-text">${text}</div>` : ''}
+                    <div class="message-text">${text}</div>
             `;
             
             if (customContent) {
@@ -692,7 +744,7 @@
             if (options) {
                 content += '<div class="message-options">';
                 options.forEach(option => {
-                    content += `<button class="option-btn" onclick="selectOption('${option.value}', this)">${option.text}</button>`;
+                    content += `<button class="option-btn" onclick="selectOption('${option.value}')">${option.text}</button>`;
                 });
                 content += '</div>';
             }
@@ -707,7 +759,7 @@
             const messageDiv = document.createElement('div');
             messageDiv.className = 'message user';
             messageDiv.innerHTML = `
-                <div class="message-avatar" style="display: none;">
+                <div class="message-avatar">
                     <i class="fas fa-user"></i>
                 </div>
                 <div class="message-content">
@@ -729,7 +781,7 @@
         function showWelcomeMessage() {
             setTimeout(() => {
                 addBotMessage(
-                    "",
+                    "Hey, hope you're well. Let's help you package your UK visa program. All information provided is secure. You can always click to go back and make changes to your selections.",
                     templatesData.initialNeeds.map(need => ({
                         text: need.text,
                         value: need.id
@@ -738,15 +790,13 @@
             }, 500);
         }
 
-        function selectOption(value, buttonElement) {
+        function selectOption(value) {
             const optionButtons = document.querySelectorAll('.option-btn');
             optionButtons.forEach(btn => btn.classList.remove('selected'));
-            buttonElement.classList.add('selected');
+            event.target.classList.add('selected');
             
             userResponses[`step${currentStep}`] = value;
-            // Get text content but preserve formatting
-            const buttonText = buttonElement.innerHTML;
-            addUserMessage(buttonText);
+            addUserMessage(event.target.textContent);
             
             setTimeout(() => {
                 processStep();
@@ -772,6 +822,13 @@
                     case 5:
                         handleStep5();
                         break;
+                    case 6:
+                        handleStep6();
+                        break;
+                    case 7:
+                        handleStep7();
+                        break;
+                         
                 }
             }, 300);
         }
@@ -781,7 +838,7 @@
             updateProgress();
             
             addBotMessage(
-                "Thank you. <u>So</u> lets help you find the right products. Are you?",
+                "Thank you. So let's help you find the right products. Are you?",
                 templatesData.userTypes.map(type => ({
                     text: type.text,
                     value: type.id
@@ -814,106 +871,49 @@
                 }))
             );
         }
-
+       
         function handleStep4() {
-            currentStep = 5;
-            updateProgress();
-            
-            addBotMessage(
-                "A few more details to help us build your application?<br><br><strong>[PLEASE SEE NEXT SLIDE ON OPTIONS TO SHOW FOR EACH ABOVE CLICKS]</strong>",
-                null,
-                null
-            );
-        }
+    currentStep = 5;
+    userResponses['step5'] = 'template';
 
-        function handleStep5() {
-            updateProgress();
-            
-            addBotMessage(
-                "Perfect! Your template package has been customized based on your requirements. Would you like to proceed with the purchase or need any modifications?",
-                [
-                    { text: "Proceed to Purchase", value: "purchase" },
-                    { text: "Modify Selection", value: "modify" },
-                    { text: "Start Over", value: "restart" }
-                ]
-            );
-        }
+    updateProgress();
 
-        function generateRecommendations() {
-            const recommendations = [];
-            
-          
-            recommendations.push({
-                id: 'basic_package',
-                name: 'Basic Template Package',
-                price: 99,
-                description: 'Essential templates for your visa application',
-                features: [
-                    'Application form templates',
-                    'Document checklist',
-                    'Basic guidance notes',
-                    'Email support'
-                ]
-            });
-            
-            
-            if (userResponses.step1 === 'business_plan') {
-                recommendations.push({
-                    id: 'business_package',
-                    name: 'Business Plan Package',
-                    price: 199,
-                    description: 'Comprehensive business plan templates and guidance',
-                    features: [
-                        'Business plan templates',
-                        'Financial projections',
-                        'Market analysis guides',
-                        'Investment strategy templates'
-                    ]
-                });
-            }
-            
-            if (userResponses.step1 === 'cover_letter') {
-                recommendations.push({
-                    id: 'legal_package',
-                    name: 'Legal Cover Letter Package',
-                    price: 149,
-                    description: 'Professional legal cover letter templates',
-                    features: [
-                        'Cover letter templates',
-                        'Legal argument frameworks',
-                        'Case law references',
-                        'Professional formatting'
-                    ]
-                });
-            }
-            
-            if (userResponses.step3 === 'yes') {
-                recommendations.push({
-                    id: 'premium_package',
-                    name: 'Premium Document Review Package',
-                    price: 299,
-                    description: 'Complete document review and verification service',
-                    features: [
-                        'Document review service',
-                        'Error checking',
-                        'Compliance verification',
-                        'Priority support'
-                    ]
-                });
-            }
-            
-            return recommendations;
-        }
+    addBotMessage(
+        "A few more details to help us build your application?",
+        [
+            { text: "Need a template", value: "template" },
+            { text: "Need to know what documents to provide", value: "documents" },
+            { text: "Need a business plan?", value: "business_plan" },
+            { text: "Need a legal cover letter to support the visa application?", value: "cover_letter" },
+            { text: "Please check my visa form and documents.", value: "check_form" }
+        ]
+    );
+}
 
-        function selectTemplate(templateId) {
-            userResponses.selectedTemplate = templateId;
-            addUserMessage(`Selected template: ${templateId}`);
-            
-            setTimeout(() => {
-                showPurchaseForm(templateId);
-            }, 200);
-        }
 
+function handleUserSelection(step, value) {
+    userResponses[step] = value;
+
+    if (step === 'step5' && value === 'template') {
+        userResponses['step6'] = 'template';
+        handleStep6();
+    }
+}
+
+function handleStep6() {
+    addBotMessage(
+        "Which visa program are you applying for?",
+        [
+            { text: "Business Visa", value: "business_visa" },
+            { text: "Investor Visa", value: "investor_visa" },
+            { text: "Skilled Worker Visa", value: "skilled_worker_visa" },
+            { text: "Family Visa", value: "family_visa" },
+            { text: "Study Visa", value: "study_visa" },
+            { text: "Other", value: "other" }
+        ]
+    );
+}
+        
         function showPurchaseForm(templateId) {
             const template = findTemplateById(templateId);
             if (!template) return;

@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-    <script src="https://www.paypal.com/sdk/js?client-id=AdlV7G8VvGHjtfSf2Mf77GNbYFb9kGEX8b2-tV6urOW0xqr8XATjdnlw8cRY4JopgaCLkwVHvc06dwsf&currency=GBP"></script>
+    <script type="text/javascript" src="https://www.paypal.com/sdk/js?client-id=AdlV7G8VvGHjtfSf2Mf77GNbYFb9kGEX8b2-tV6urOW0xqr8XATjdnlw8cRY4JopgaCLkwVHvc06dwsf&currency=GBP"></script>
     
     <style>
         :root {
@@ -542,22 +542,21 @@
         }
 
         .nav-cta {
-            background: var(--secondary);
-            color: var(--light);
             padding: 0.75rem 1.5rem;
             border-radius: 8px;
             font-weight: 600;
             transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
         }
 
         .nav-cta:hover {
-            background: var(--accent);
             transform: translateY(-1px);
         }
 
         .nav-client-access {
-            background: var(--success);
-            color: var(--light);
             padding: 0.75rem 1.5rem;
             border-radius: 8px;
             font-weight: 600;
@@ -565,7 +564,9 @@
             text-decoration: none;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 0.5rem;
+            text-align: center;
         }
 
         .nav-client-access i {
@@ -573,9 +574,7 @@
         }
 
         .nav-client-access:hover {
-            background: #059669;
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
         }
 
      
@@ -4813,7 +4812,7 @@
 
     
         function selectPaymentMethod(method) {
-            // Find the payment form container
+          
             const chatMessages = document.getElementById('chatMessages');
             let paymentFormContainer = null;
             
@@ -4828,7 +4827,7 @@
                 }
             }
             
-            // Fallback to global search if not found in container
+            
             const paypalBtn = paymentFormContainer ? paymentFormContainer.querySelector('#paypalBtn') : document.getElementById('paypalBtn');
             const cardBtn = paymentFormContainer ? paymentFormContainer.querySelector('#cardBtn') : document.getElementById('cardBtn');
             const paypalOptions = paymentFormContainer ? paymentFormContainer.querySelector('#paypalOptions') : document.getElementById('paypalOptions');
@@ -5169,7 +5168,7 @@
         function processPayPalPayment(option) {
             addUserMessage(`Processing PayPal payment (${option === 'guest' ? 'Guest Checkout' : 'PayPal Account'})...`);
             
-            // Calculate total cost including all selected items
+            
             let totalCost = 0;
             let description = 'Visa Application Service';
             
@@ -5193,7 +5192,7 @@
                 description += ` + ${userResponses.selectedPackage.name}`;
             }
             
-            // Find the payment form container to render PayPal button in the correct location
+        
             const chatMessages = document.getElementById('chatMessages');
             let paypalContainer = null;
             if (chatMessages) {
@@ -5208,7 +5207,7 @@
                 }
             }
             
-            // If container not found, try global search
+    
             if (!paypalContainer) {
                 paypalContainer = document.getElementById('paypal-button-container');
             }
@@ -5219,10 +5218,10 @@
                 return;
             }
             
-            // Clear any existing PayPal buttons
+        
             paypalContainer.innerHTML = '';
             
-            // Render PayPal button
+            
             paypal.Buttons({
                 createOrder: function(data, actions) {
                     return actions.order.create({
@@ -5273,7 +5272,7 @@
                             ]
                         );
                         
-                        // Redirect to journey.html after successful payment
+                    
                         setTimeout(function() {
                             window.location.href = 'journey.html';
                         }, 2000);
@@ -5300,14 +5299,14 @@
                 }
             }).render(paypalContainer);
             
-            // Show the container
+            
             paypalContainer.style.display = 'block';
         }
 
         function processCreditCardPayment(cardData) {
             addUserMessage(`Processing debit/credit card payment...`);
             
-            // Calculate total cost
+            
             let totalCost = 0;
             if (userResponses.selectedVisa) {
                 totalCost += userResponses.selectedVisa.basePrice || 0;
@@ -5324,7 +5323,7 @@
                 totalCost += packagePrice;
             }
             
-            // Simulate payment processing
+            
             setTimeout(() => {
                 addBotMessage(
                     `<div style="background:linear-gradient(135deg, #f0fdf4, #dcfce7);border:1px solid #bbf7d0;padding:1.5rem;border-radius:12px;margin-bottom:1rem;">
@@ -5361,7 +5360,7 @@
                     ]
                 );
                 
-                // Redirect to journey.html after successful payment
+                
                 setTimeout(function() {
                     window.location.href = 'journey.html';
                 }, 2000);
@@ -5369,7 +5368,7 @@
         }
 
         function initializePaymentForm() {
-            // Find the payment form container
+    
             const chatMessages = document.getElementById('chatMessages');
             let paymentFormContainer = null;
             
@@ -5405,7 +5404,7 @@
                 paypalContainer.style.display = 'block';
             }
             
-            // Add event listeners to clear error borders when users type
+        
             const fullNameEl = paymentFormContainer ? paymentFormContainer.querySelector('#fullName') : document.getElementById('fullName');
             const emailEl = paymentFormContainer ? paymentFormContainer.querySelector('#email') : document.getElementById('email');
             const phoneEl = paymentFormContainer ? paymentFormContainer.querySelector('#phone') : document.getElementById('phone');
@@ -5415,14 +5414,14 @@
             const expiryYearEl = paymentFormContainer ? paymentFormContainer.querySelector('#expiryYear') : document.getElementById('expiryYear');
             const cvvEl = paymentFormContainer ? paymentFormContainer.querySelector('#cvv') : document.getElementById('cvv');
             
-            // Function to reset border color on input
+        
             const resetBorder = (element) => {
                 if (element) {
                     element.style.borderColor = '#d1d5db';
                 }
             };
             
-            // Add input event listeners to all form fields
+            
             if (fullNameEl) {
                 fullNameEl.addEventListener('input', () => resetBorder(fullNameEl));
             }
