@@ -4,28 +4,23 @@
 
     const AUTH_KEY = 'admin_auth_token';
     const AUTH_EXPIRY = 'admin_auth_expiry';
-    const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes in milliseconds
+    const SESSION_TIMEOUT = 30 * 60 * 1000; 
     const VALID_CREDENTIALS = {
         username: 'admin',
         password: 'admin123'
     };
 
-    // Auth object
+    
     window.Auth = {
-        /**
-         * Login function - validates credentials and sets session
-         * @param {string} username 
-         * @param {string} password 
-         * @returns {Promise}
-         */
+        
         login: function(username, password) {
             return new Promise(function(resolve, reject) {
-                // Simulate network delay for real-time feel
+                
                 setTimeout(function() {
                     if (username === VALID_CREDENTIALS.username && 
                         password === VALID_CREDENTIALS.password) {
                         
-                        // Generate a simple token
+                    
                         const token = btoa(username + ':' + Date.now());
                         const expiry = Date.now() + SESSION_TIMEOUT;
                         
@@ -33,7 +28,7 @@
                             sessionStorage.setItem(AUTH_KEY, token);
                             sessionStorage.setItem(AUTH_EXPIRY, expiry.toString());
                             
-                            // Dispatch login event for real-time updates
+                            
                             window.dispatchEvent(new CustomEvent('auth:login', {
                                 detail: { username: username }
                             }));

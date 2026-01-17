@@ -311,7 +311,7 @@
         function renderFAQItems(faqItems) {
             const faqContainer = document.getElementById('faq-container');
             
-            // Sort: featured first, then by category, then by question
+            
             faqItems.sort((a, b) => {
                 if (a.featured && !b.featured) return -1;
                 if (!a.featured && b.featured) return 1;

@@ -1577,7 +1577,7 @@
                 document.getElementById('documentForm').classList.add('active');
             } else if (currentStep === 8) {
                 document.getElementById('reviewForm').classList.add('active');
-                // Generate review content
+        
                 const reviewContent = document.getElementById('reviewContent');
                 const applicantsData = applicants.map(applicant => {
                     const nameInput = document.getElementById(`applicant-${applicant.id}-fullName`);
@@ -1677,7 +1677,7 @@
             } else if (currentStep === 9) {
                 document.getElementById('successForm').classList.add('active');
             
-                const successContent = document.getElementById('successContent');
+                const successContent = document.getElementById('successConten');
                 const referenceNumber = localStorage.getItem('applicationReference') || 'N/A';
                 const currentFormData = getCurrentFormData();
                     
@@ -2953,7 +2953,7 @@ Note: This is a digital copy of your application. Please keep this for your reco
                 jobTitleElement.textContent = jobTitleInput.value || 'Not provided';
             }
             
-            if (employmentStatusElement && employmentStatusInput) {
+            if (employmentInfoStatusElement && employmentStatusInput) {
                 employmentStatusElement.textContent = employmentStatusInput.options[employmentStatusInput.selectedIndex]?.text || 'Not provided';
             }
             

@@ -4739,7 +4739,6 @@
                     </div>
                 `;
 
-            
                 const params = new URLSearchParams({
                     action: 'get',
                     page: currentChatPage,
@@ -4747,24 +4746,15 @@
                     search: currentChatSearch,
                     filter: currentChatFilter
                 });
-
-               
                 const response = await fetch(`public/track_chat.php?${params}`);
                 const result = await response.json();
 
                 if (result.status !== 'success') {
                     throw new Error(result.message || 'Failed to load chat data');
                 }
-
-              
                 chatData = result.data;
-                
                 updateChatStats(result.stats);
-                
-              
                 displayChats(result.data);
-                
-             
                 updateChatPagination(result.pagination);
                 
             } catch (error) {
@@ -4854,8 +4844,6 @@
                     chat.userLocation.toLowerCase().includes(searchTerm)
                 );
             }
-            
-            
             const now = new Date();
             switch (currentChatFilter) {
                 case 'today':
@@ -4908,8 +4896,6 @@
                 `;
                 return;
             }
-
-        
             const startIndex = (currentChatPage - 1) * chatItemsPerPage;
             const endIndex = startIndex + chatItemsPerPage;
             const paginatedData = data.slice(startIndex, endIndex);
@@ -5328,7 +5314,7 @@
                 filteredApplicantDropdowns = filteredApplicantDropdowns.filter(d => !d.active);
             }
 
-            // Apply search term if present
+        
             if (currentApplicantDropdownSearchTerm && currentApplicantDropdownSearchTerm.trim() !== '') {
                 const term = currentApplicantDropdownSearchTerm.toLowerCase();
                 filteredApplicantDropdowns = filteredApplicantDropdowns.filter(dropdown =>
@@ -5349,7 +5335,6 @@
                         return 0;
                 }
             });
-
             filteredApplicantDropdowns.forEach(dropdown => {
                 const dropdownItem = document.createElement('div');
                 dropdownItem.className = `visa-item ${dropdown.active ? 'active' : 'inactive'}`;
@@ -5394,7 +5379,6 @@
                 dropdownList.appendChild(dropdownItem);
             });
         }
-
         function updateApplicantDropdownPreview() {
             const previewMappings = {
                 'preview-nationality': 'Nationality',
@@ -5604,7 +5588,6 @@
             `;
             document.body.appendChild(menu);
         }
-
         function quickAddApplicantDropdown(name, description, optionsText) {
             const dropdownData = {
                 id: Math.max(...applicantDropdownOptions.map(d => d.id), 0) + 1,
@@ -5698,17 +5681,11 @@
             closeDropdownModal();
             showAlert('Dropdown category saved successfully', 'success');
         });
-
-  
-
-
-        
         let currentFolder = 'root';
         let selectedFiles = [];
         let fileList = [];
         let uploadQueue = [];
 
-     
         const sampleFiles = [
             { id: 1, name: 'visa-application-guide.pdf', type: 'document', size: '2.5 MB', path: 'documents/', date: '2024-01-15', icon: 'fas fa-file-pdf' },
             { id: 2, name: 'passport-template.jpg', type: 'image', size: '1.2 MB', path: 'images/', date: '2024-01-14', icon: 'fas fa-image' },
@@ -5717,21 +5694,16 @@
             { id: 5, name: 'visa-requirements.zip', type: 'archive', size: '5.1 MB', path: 'documents/', date: '2024-01-11', icon: 'fas fa-file-archive' },
             { id: 6, name: 'interview-questions.txt', type: 'document', size: '45 KB', path: 'templates/', date: '2024-01-10', icon: 'fas fa-file-alt' }
         ];
-
         
         function initializeFileManager() {
             fileList = [...sampleFiles];
             loadFiles();
             setupFileUploadHandlers();
         }
-
-        
         function loadFiles() {
             const fileListElement = document.getElementById('fileList');
             if (!fileListElement) return;
-
             const filteredFiles = fileList.filter(file => file.path === currentFolder + '/');
-            
             if (filteredFiles.length === 0) {
                 fileListElement.innerHTML = `
                     <div class="empty-state">
@@ -5895,17 +5867,12 @@
             uploadQueue = uploadQueue.filter(file => file.id !== fileId);
             updateFilePreview();
         }
-
-        
         function uploadFiles() {
             if (uploadQueue.length === 0) {
                 showAlert('Please select files to upload', 'warning');
                 return;
             }
-
             const folder = document.getElementById('uploadFolder').value;
-            
-           
             uploadQueue.forEach((fileData, index) => {
                 setTimeout(() => {
                     const newFile = {
@@ -5955,8 +5922,6 @@
                 showAlert(`${file.name} deleted successfully`, 'success');
             }
         }
-
-    
         function createNewFolder() {
             const folderName = prompt('Enter folder name:');
             if (folderName && folderName.trim()) {
@@ -5964,14 +5929,10 @@
                 showAlert(`Folder "${folderName}" created successfully`, 'success');
             }
         }
-
-    
         function refreshFileList() {
             loadFiles();
             showAlert('File list refreshed', 'info');
         }
-
-        
         function changeFileViewMode() {
             const viewMode = document.getElementById('fileViewMode').value;
             const fileListElement = document.getElementById('fileList');
@@ -5982,8 +5943,6 @@
                 fileListElement.classList.remove('list-view');
             }
         }
-
-    
         function filterByType() {
             const checkboxes = document.querySelectorAll('.filter-checkbox input[type="checkbox"]');
             const selectedTypes = Array.from(checkboxes)
@@ -5993,8 +5952,6 @@
             
             console.log('Filtering by types:', selectedTypes);
         }
-
-        
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
             const k = 1024;
@@ -6041,8 +5998,6 @@
                 default: return 'fas fa-file';
             }
         }
-
-        // Logout button functionality
         document.addEventListener('DOMContentLoaded', function() {
             const logoutBtn = document.getElementById('logoutBtn');
             if (logoutBtn) {

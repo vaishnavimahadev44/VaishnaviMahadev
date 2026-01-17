@@ -13,9 +13,7 @@
         baseUrl: 'https://data.mongodb-api.com/app/YOUR_APP_ID/endpoint/data/v1'
     };
 
-    /**
-     * MongoDB Frontend Connection Object
-     */
+    
     window.MongoDB = {
         config: MONGODB_CONFIG,
 
