@@ -1,56 +1,73 @@
-// Real-time Authentication System
+/**
+ * Authentication System - Integrated with Laravel Backend API
+ * Requires api.js to be loaded first
+ */
+
 (function() {
     'use strict';
 
-    const AUTH_KEY = 'admin_auth_token';
-    const AUTH_EXPIRY = 'admin_auth_expiry';
-    const SESSION_TIMEOUT = 30 * 60 * 1000; 
-    const VALID_CREDENTIALS = {
-        username: 'admin',
-        password: 'admin123'
-    };
+    // Check if API service is available
+    if (typeof window.API === 'undefined') {
+        console.error('API service (api.js) must be loaded before auth.js');
+    }
 
-    
     window.Auth = {
-        
-        login: function(username, password) {
-            return new Promise(function(resolve, reject) {
-                
-                setTimeout(function() {
-                    if (username === VALID_CREDENTIALS.username && 
-                        password === VALID_CREDENTIALS.password) {
-                        
+        /**
+         * Login function - uses backend API
+         * @param {string} email - User's email (or username for backward compatibility)
+         * @param {string} password - User's password
+         * @param {boolean} rememberMe - Whether to use localStorage (true) or sessionStorage (false)
+         * @returns {Promise}
+         */
+        login: function(emailOrUsername, password, rememberMe = false) {
+            return new Promise(async function(resolve, reject) {
+                // Check if API service is available
+                if (typeof window.API === 'undefined') {
+                    reject(new Error('API service is not available. Please ensure api.js is loaded.'));
+                    return;
+                }
+
+                try {
+                    // Use email if provided, otherwise treat as email (for backward compatibility)
+                    const email = emailOrUsername.includes('@') ? emailOrUsername : emailOrUsername + '@example.com';
                     
-                        const token = btoa(username + ':' + Date.now());
-                        const expiry = Date.now() + SESSION_TIMEOUT;
-                        
-                        try {
-                            sessionStorage.setItem(AUTH_KEY, token);
-                            sessionStorage.setItem(AUTH_EXPIRY, expiry.toString());
-                            
-                            
-                            window.dispatchEvent(new CustomEvent('auth:login', {
-                                detail: { username: username }
-                            }));
-                            
-                            resolve({ success: true, token: token });
-                        } catch (e) {
-                            reject(new Error('Failed to store authentication. Please check if cookies/storage is enabled.'));
-                        }
-                    } else {
-                        reject(new Error('Invalid username or password.'));
+                    // Call backend API
+                    const result = await window.API.auth.login(email, password, rememberMe);
+                    
+                    resolve({
+                        success: true,
+                        token: result.token,
+                        user: result.user
+                    });
+                } catch (error) {
+                    // Handle API errors
+                    let errorMessage = 'Login failed. Please try again.';
+                    
+                    if (error.status === 401) {
+                        errorMessage = 'Invalid email or password.';
+                    } else if (error.message) {
+                        errorMessage = error.message;
                     }
-                }, 300); // Small delay for real-time feel
+                    
+                    reject(new Error(errorMessage));
+                }
             });
         },
 
         /**
-         * Logout function - clears session
+         * Logout function - uses backend API
          */
-        logout: function() {
+        logout: async function() {
             try {
-                sessionStorage.removeItem(AUTH_KEY);
-                sessionStorage.removeItem(AUTH_EXPIRY);
+                // Call backend API if available
+                if (typeof window.API !== 'undefined' && window.API.auth.isAuthenticated()) {
+                    try {
+                        await window.API.auth.logout();
+                    } catch (error) {
+                        console.error('Logout API error:', error);
+                        // Continue with local logout even if API call fails
+                    }
+                }
                 
                 // Dispatch logout event
                 window.dispatchEvent(new CustomEvent('auth:logout'));
@@ -68,35 +85,10 @@
          * @returns {boolean}
          */
         isAuthenticated: function() {
-            try {
-                const token = sessionStorage.getItem(AUTH_KEY);
-                const expiry = sessionStorage.getItem(AUTH_EXPIRY);
-                
-                if (!token || !expiry) {
-                    return false;
-                }
-                
-                // Check if session expired
-                const now = Date.now();
-                const expiryTime = parseInt(expiry, 10);
-                
-                if (now > expiryTime) {
-                    // Session expired, clear it
-                    this.logout();
-                    return false;
-                }
-                
-                // Extend session on activity (optional - for real-time session management)
-                const timeRemaining = expiryTime - now;
-                if (timeRemaining < SESSION_TIMEOUT / 2) {
-                    // Extend session if less than half time remaining
-                    sessionStorage.setItem(AUTH_EXPIRY, (Date.now() + SESSION_TIMEOUT).toString());
-                }
-                
-                return true;
-            } catch (e) {
+            if (typeof window.API === 'undefined') {
                 return false;
             }
+            return window.API.auth.isAuthenticated();
         },
 
         /**
@@ -104,11 +96,21 @@
          * @returns {object|null}
          */
         getUser: function() {
+            if (typeof window.API === 'undefined') {
+                return null;
+            }
+            
             if (this.isAuthenticated()) {
-                return {
-                    username: VALID_CREDENTIALS.username,
-                    isAdmin: true
-                };
+                const user = window.API.auth.getStoredUser();
+                if (user) {
+                    return {
+                        username: user.name || user.email,
+                        email: user.email,
+                        name: user.name,
+                        id: user.id,
+                        isAdmin: user.is_admin || false
+                    };
+                }
             }
             return null;
         },
@@ -130,38 +132,45 @@
 
         /**
          * Get session time remaining in milliseconds
+         * Note: Laravel Sanctum tokens don't expire by default, but this can be configured
          * @returns {number}
          */
         getSessionTimeRemaining: function() {
-            try {
-                const expiry = sessionStorage.getItem(AUTH_EXPIRY);
-                if (!expiry) return 0;
-                
-                const expiryTime = parseInt(expiry, 10);
-                const remaining = expiryTime - Date.now();
-                return remaining > 0 ? remaining : 0;
-            } catch (e) {
-                return 0;
+            // Sanctum tokens don't have expiration by default
+            // Return a large number to indicate valid session
+            if (this.isAuthenticated()) {
+                return 999999999; // Large number indicating valid session
             }
+            return 0;
         }
     };
 
     // Real-time session monitoring
     if (typeof window !== 'undefined') {
         // Check authentication status periodically
-        setInterval(function() {
+        setInterval(async function() {
             if (window.Auth && !window.Auth.isAuthenticated()) {
                 // If we're on a protected page and not authenticated, redirect
                 const currentPath = window.location.pathname;
                 if (currentPath.includes('Admin') && !currentPath.includes('login')) {
                     window.Auth.requireAuth(window.location.href);
                 }
+            } else if (window.Auth && window.Auth.isAuthenticated() && typeof window.API !== 'undefined') {
+                // Verify token is still valid by checking with backend
+                try {
+                    await window.API.auth.getUser();
+                } catch (error) {
+                    // Token is invalid, logout
+                    if (error.status === 401) {
+                        window.Auth.logout();
+                    }
+                }
             }
         }, 60000); // Check every minute
 
         // Listen for storage events (for multi-tab real-time sync)
         window.addEventListener('storage', function(e) {
-            if (e.key === AUTH_KEY || e.key === AUTH_EXPIRY) {
+            if (e.key === 'auth_token' || e.key === 'auth_user') {
                 // Auth state changed in another tab
                 if (!window.Auth.isAuthenticated()) {
                     const currentPath = window.location.pathname;
@@ -173,13 +182,22 @@
         });
 
         // Monitor visibility changes (check auth when tab becomes visible)
-        document.addEventListener('visibilitychange', function() {
+        document.addEventListener('visibilitychange', async function() {
             if (!document.hidden && window.Auth) {
                 // Tab became visible, check auth status
                 if (!window.Auth.isAuthenticated()) {
                     const currentPath = window.location.pathname;
                     if (currentPath.includes('Admin') && !currentPath.includes('login')) {
                         window.Auth.requireAuth(window.location.href);
+                    }
+                } else if (typeof window.API !== 'undefined') {
+                    // Verify token is still valid
+                    try {
+                        await window.API.auth.getUser();
+                    } catch (error) {
+                        if (error.status === 401) {
+                            window.Auth.logout();
+                        }
                     }
                 }
             }
