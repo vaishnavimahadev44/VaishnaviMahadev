@@ -120,7 +120,7 @@ export const deleteUser = async (req, res, next) => {
     try {
         const { id } = req.params;
 
-        // Check if user exists
+        
         const [existingUser] = await pool.query('SELECT * FROM users WHERE id = ?', [id]);
         
         if (existingUser.length === 0) {

@@ -1,15 +1,15 @@
-// MongoDB Frontend Connection using Atlas Data API
+
 (function() {
     'use strict';
 
-    // MongoDB Atlas Data API Configuration
+    
     const MONGODB_CONFIG = {
-        // Replace these with your MongoDB Atlas Data API credentials
-        apiKey: 'YOUR_API_KEY', // Your MongoDB Atlas Data API Key
-        dataSource: 'YOUR_CLUSTER_NAME', // Your cluster name (e.g., 'Cluster0')
-        database: 'YOUR_DATABASE_NAME', // Your database name
-        collection: 'YOUR_COLLECTION_NAME', // Default collection name
-        // MongoDB Atlas Data API endpoint
+        
+        apiKey: 'YOUR_API_KEY', 
+        dataSource: 'YOUR_CLUSTER_NAME', 
+        database: 'YOUR_DATABASE_NAME', 
+        collection: 'YOUR_COLLECTION_NAME',
+        
         baseUrl: 'https://data.mongodb-api.com/app/YOUR_APP_ID/endpoint/data/v1'
     };
 
