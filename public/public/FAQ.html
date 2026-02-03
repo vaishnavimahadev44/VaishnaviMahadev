@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - UK Visa Application</title>
+    <style>
+        :root {
+            --brand: #4F46E5;
+            --brand-dark: #4338CA;
+            --text-1: #111827;
+            --text-2: #4B5563;
+            --surface-2: #FFFFFF;
+            --surface-3: #F3F4F6;
+            --accent-1: #FF6B6B;
+            --accent-2: #4ECDC4;
+            --accent-3: #FFD93D;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-1);
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            color: var(--brand);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .faq-section {
+            margin-bottom: 2rem;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--surface-3);
+            padding: 1rem 0;
+        }
+
+        .faq-item.featured {
+            border-left: 4px solid var(--accent-3);
+            padding-left: 1rem;
+            background: linear-gradient(90deg, rgba(255, 217, 61, 0.1) 0%, transparent 100%);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .featured-badge {
+            display: inline-block;
+            background: var(--accent-3);
+            color: var(--text-1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            color: var(--brand);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: var(--surface-2);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--accent-1);
+        }
+
+        .faq-question[data-accent="1"] {
+            border-left-color: var(--accent-1);
+        }
+
+        .faq-question[data-accent="2"] {
+            border-left-color: var(--accent-2);
+        }
+
+        .faq-question[data-accent="3"] {
+            border-left-color: var(--accent-3);
+        }
+
+        .faq-question:hover {
+            background: var(--surface-3);
+        }
+
+        .faq-answer {
+            padding: 1rem;
+            color: var(--text-2);
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+            white-space: pre-line;
+        }
+
+        .faq-question.active + .faq-answer {
+            display: block;
+        }
+
+        .faq-question::after {
+            content: '+';
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .faq-question.active::after {
+            transform: rotate(45deg);
+            animation: none;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: var(--brand);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 2rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: var(--brand-dark);
+        }
+
+        .admin-button {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: var(--accent-1);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 1rem;
+            margin-left: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .admin-button:hover {
+            background: #e55a5a;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-2);
+        }
+
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--surface-3);
+            border-radius: 50%;
+            border-top-color: var(--brand);
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Frequently Asked Questions</h1>
+            <p>Find answers to common questions about the UK visa application process</p>
+        </div>
+
+        <div class="faq-section" id="faq-container">
+            <div class="loading">Loading FAQ items...</div>
+        </div>
+
+        <div style="text-align: center;">
+            <a href="journey.html" class="back-button">← Back to Application</a>
+           
+        </div>
+    </div>
+
+    <script>
+        
+        function loadFAQContent() {
+            const faqContainer = document.getElementById('faq-container');
+            // Use the same localStorage key as AdminPanel ('faqs' instead of 'faqItems')
+            const faqs = JSON.parse(localStorage.getItem('faqs') || '[]');
+            
+            if (faqs.length === 0) {
+                // Create default FAQs with the same structure as AdminPanel
+                const defaultFAQ = [
+                    {
+                        id: 1,
+                        question: "What types of UK visas can I apply for?",
+                        answer: "You can apply for various types of UK visas including:\n• Tourist/Visitor visa\n• Work visa\n• Student visa\n• Family visa\n• Business visa\n• Settlement visa",
+                        category: "general",
+                        featured: true,
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        id: 2,
+                        question: "I am new to this \"website thing\". How does the whole process work?",
+                        answer: "Simply complete our \"IT quote\" form or simply choose from our \"website packages\". A member of our team will be in touch to discuss in detail with no obligation to proceed.",
+                        category: "process",
+                        featured: false,
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        id: 3,
+                        question: "What documents do I need to provide?",
+                        answer: "Required documents typically include:\n• Valid passport\n• Proof of financial means\n• Proof of accommodation\n• Travel itinerary\n• Supporting letters (if applicable)\n• Passport-sized photographs",
+                        category: "documents",
+                        featured: false,
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        id: 4,
+                        question: "How much does a UK visa cost?",
+                        answer: "Visa fees vary depending on the type and duration of visa. Standard visitor visas start from £95 for a 6-month visa. Work and study visas have different fee structures. Additional services like priority processing incur extra charges.",
+                        category: "costs",
+                        featured: false,
+                        createdAt: new Date().toISOString()
+                    },
+                    {
+                        id: 5,
+                        question: "Can I track my application status?",
+                        answer: "Yes, you can track your application status using your application reference number through our online portal. You will also receive email updates at key stages of the process.",
+                        category: "tracking",
+                        featured: false,
+                        createdAt: new Date().toISOString()
+                    }
+                ];
+                
+                localStorage.setItem('faqs', JSON.stringify(defaultFAQ));
+                renderFAQItems(defaultFAQ);
+            } else {
+                renderFAQItems(faqs);
+            }
+        }
+
+        function renderFAQItems(faqItems) {
+            const faqContainer = document.getElementById('faq-container');
+            
+            
+            faqItems.sort((a, b) => {
+                if (a.featured && !b.featured) return -1;
+                if (!a.featured && b.featured) return 1;
+                if (a.category !== b.category) return a.category.localeCompare(b.category);
+                return a.question.localeCompare(b.question);
+            });
+            
+            let html = '';
+            faqItems.forEach((item, index) => {
+                const accentClass = (index % 3) + 1;
+                const featuredClass = item.featured ? ' featured' : '';
+                html += `
+                    <div class="faq-item${featuredClass}">
+                        <div class="faq-question" data-accent="${accentClass}">
+                            ${item.question}
+                            ${item.featured ? '<span class="featured-badge">⭐ Featured</span>' : ''}
+                        </div>
+                        <div class="faq-answer">
+                            ${item.answer.replace(/\n/g, '<br>')}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            faqContainer.innerHTML = html;
+            
+        
+            document.querySelectorAll('.faq-question').forEach(question => {
+                question.addEventListener('click', () => {
+                    
+                    document.querySelectorAll('.faq-question').forEach(q => {
+                        if (q !== question) {
+                            q.classList.remove('active');
+                        }
+                    });
+                    
+                    
+                    question.classList.toggle('active');
+                });
+            });
+        }
+
+        
+        document.addEventListener('DOMContentLoaded', loadFAQContent);
+    </script>
+</body>
+</html>
