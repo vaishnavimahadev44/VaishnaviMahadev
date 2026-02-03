@@ -18,11 +18,11 @@ class PaymentController extends Controller
     public function store(Request $request, $applicationId)
     {
         $validated = $request->validate([
-            'payment_method'       => 'required|in:PAYPAL_GUEST,PAYPAL_ACCOUNT,PAY_LATER',
-            'payment_status'       => 'required|in:INITIATED,PAID,FAILED,EMAIL_SENT',
-            'amount'               => 'required|numeric|min:0',
-            'currency'             => 'required|string|max:10',
-            'transaction_reference'=> 'required|string|max:100'
+            'payment_method' => 'required|in:PAYPAL_GUEST,PAYPAL_ACCOUNT,PAY_LATER',
+            'payment_status' => 'required|in:INITIATED,PAID,FAILED,EMAIL_SENT',
+            'amount' => 'required|numeric|min:0',
+            'currency' => 'required|string|max:10',
+            'transaction_reference' => 'required|string|max:100'
         ]);
 
         $validated['application_id'] = $applicationId;
@@ -36,7 +36,7 @@ class PaymentController extends Controller
     public function show($applicationId, $id)
     {
         $payment = Payment::where('application_id', $applicationId)
-                          ->findOrFail($id);
+            ->findOrFail($id);
         return response()->json($payment, 200);
     }
 
@@ -44,29 +44,28 @@ class PaymentController extends Controller
     public function update(Request $request, $applicationId, $id)
     {
         $payment = Payment::where('application_id', $applicationId)
-                          ->findOrFail($id);
-
-        if ($request->isMethod('put')) {
-            $validated = $request->validate([
-                'payment_method'       => 'required|in:PAYPAL_GUEST,PAYPAL_ACCOUNT,PAY_LATER',
-                'payment_status'       => 'required|in:INITIATED,PAID,FAILED,EMAIL_SENT',
-                'amount'               => 'required|numeric|min:0',
-                'currency'             => 'required|string|max:10',
-                'transaction_reference'=> 'required|string|max:100'
-            ]);
-        } else {
-            $validated = $request->validate([
-            'payment_method'       => 'sometimes|in:PAYPAL_GUEST,PAYPAL_ACCOUNT,PAY_LATER',
-            'payment_status'       => 'sometimes|in:INITIATED,PAID,FAILED,EMAIL_SENT',
-            'amount'               => 'sometimes|numeric|min:0',
-            'currency'             => 'sometimes|string|max:10',
-            'transaction_reference'=> 'sometimes|string|max:100'
-            ]); 
-        }
-
+            ->findOrFail($id);
         if (!$payment) {
             return response()->json(['message' => 'Visa Payment not found'], 404);
         }
+        if ($request->isMethod('put')) {
+            $validated = $request->validate([
+                'payment_method' => 'required|in:PAYPAL_GUEST,PAYPAL_ACCOUNT,PAY_LATER',
+                'payment_status' => 'required|in:INITIATED,PAID,FAILED,EMAIL_SENT',
+                'amount' => 'required|numeric|min:0',
+                'currency' => 'required|string|max:10',
+                'transaction_reference' => 'required|string|max:100'
+            ]);
+        } else {
+            $validated = $request->validate([
+                'payment_method' => 'sometimes|in:PAYPAL_GUEST,PAYPAL_ACCOUNT,PAY_LATER',
+                'payment_status' => 'sometimes|in:INITIATED,PAID,FAILED,EMAIL_SENT',
+                'amount' => 'sometimes|numeric|min:0',
+                'currency' => 'sometimes|string|max:10',
+                'transaction_reference' => 'sometimes|string|max:100'
+            ]);
+        }
+
         $payment->update($validated);
 
         return response()->json($payment, 200);
@@ -76,9 +75,9 @@ class PaymentController extends Controller
     public function destroy($applicationId, $id)
     {
         $payment = Payment::where('application_id', $applicationId)
-                          ->findOrFail($id);
+            ->findOrFail($id);
         $payment->delete();
 
-        return response()->json(['message' => 'Deleted successfully'], 200);
+        return response()->json(['message' => 'payment deleted successfully'], 200);
     }
 }

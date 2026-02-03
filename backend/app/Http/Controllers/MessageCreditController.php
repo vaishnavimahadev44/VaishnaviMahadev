@@ -21,8 +21,8 @@ class MessageCreditController extends Controller
         $application = VisaApplication::findOrFail($applicationId);
 
         $validated = $request->validate([
-            'credits'      => 'required|integer|min:1',
-            'price'        => 'required|numeric|min:0'
+            'credits' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:0'
         ]);
 
         $messageCredit = $application->messageCredits()->create($validated);
@@ -34,8 +34,8 @@ class MessageCreditController extends Controller
     public function show($applicationId, $messageCreditId)
     {
         $messageCredit = MessageCreditOption::where('application_id', $applicationId)
-                                       ->where('credit_id', $messageCreditId)
-                                       ->firstOrFail();
+            ->where('credit_id', $messageCreditId)
+            ->firstOrFail();
         return response()->json($messageCredit, 200);
     }
 
@@ -43,21 +43,22 @@ class MessageCreditController extends Controller
     public function update(Request $request, $applicationId, $messageCreditId)
     {
         $messageCredit = MessageCreditOption::where('application_id', $applicationId)
-                                   ->where('credit_id', $messageCreditId)
-                                   ->firstOrFail();
+            ->where('credit_id', $messageCreditId)
+            ->firstOrFail();
 
-        if ($request->isMethod('put')) {   
-        // Full update: require all fields                       
-        $validated = $request->validate([
-            'credits'      => 'required|integer|min:1',
-            'price'        => 'required|numeric|min:0'        ]);
-    } else {
-        // PATCH: partial update, only validate provided fields
-        $validated = $request->validate([
-            'credits'      => 'sometimes|integer|min:1',
-            'price'        => 'sometimes|numeric|min:0'
-        ]);
-    }
+        if ($request->isMethod('put')) {
+            // Full update: require all fields                       
+            $validated = $request->validate([
+                'credits' => 'required|integer|min:1',
+                'price' => 'required|numeric|min:0'
+            ]);
+        } else {
+            // PATCH: partial update, only validate provided fields
+            $validated = $request->validate([
+                'credits' => 'sometimes|integer|min:1',
+                'price' => 'sometimes|numeric|min:0'
+            ]);
+        }
 
         if (!$messageCredit) {
             return response()->json(['message' => 'Message Credit options not found'], 404);
@@ -72,10 +73,10 @@ class MessageCreditController extends Controller
     public function destroy($applicationId, $messageCreditId)
     {
         $messageCredit = MessageCreditOption::where('application_id', $applicationId)
-                                  ->where('credit_id', $messageCreditId)
-                                  ->firstOrFail();
+            ->where('credit_id', $messageCreditId)
+            ->firstOrFail();
         $messageCredit->delete();
 
-        return response()->json(['message' => 'Dependent deleted successfully'], 200);
+        return response()->json(['message' => 'Message credit options deleted successfully'], 200);
     }
 }

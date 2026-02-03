@@ -14,13 +14,19 @@ return [
         'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
     ],
 
-    
+
 
     'guards' => [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'sanctum' => [
+            'driver' => 'sanctum',
+            'provider' => 'users',
+        ],
+
+
     ],
 
     'providers' => [

@@ -1,5 +1,7 @@
 <?php
+namespace App\Models;
 
+use Illuminate\Database\Eloquent\Model;
 class TravelInfo extends Model
 {
     protected $table = 'travel_info';

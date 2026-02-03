@@ -46,26 +46,25 @@ class VisaPackageController extends Controller
         $package = VisaPackage::where('application_id', $applicationId)
                                    ->where('package_id', $packageId)
                                    ->firstOrFail();
-
-        if ($request->isMethod('put')) {   
-        // Full update: require all fields                       
-        $validated = $request->validate([
-            'package_name'       => 'required|string|max:150',
-            'visa_type'      => 'required|string|max:100',
-            'base_price'     => 'required|numeric|min:0'
-        ]);
-    } else {
-        // PATCH: partial update, only validate provided fields
-        $validated = $request->validate([
-            'package_name'       => 'sometimes|string|max:150',
-            'visa_type'      => 'sometimes|string|max:100',
-            'base_price'     => 'sometimes|numeric|min:0'
-        ]);
-    }
-
         if (!$package) {
-            return response()->json(['message' => 'Visa package details not found'], 404);
+        return response()->json(['message' => 'Visa package details not found'], 404);
         }
+
+        if ($request->isMethod('put')) {
+                // Full update: require all fields                       
+                $validated = $request->validate([
+                    'package_name'       => 'required|string|max:150',
+                    'visa_type'      => 'required|string|max:100',
+                    'base_price'     => 'required|numeric|min:0'
+                ]);
+        } else {
+                // PATCH: partial update, only validate provided fields
+                $validated = $request->validate([
+                    'package_name'       => 'sometimes|string|max:150',
+                    'visa_type'      => 'sometimes|string|max:100',
+                    'base_price'     => 'sometimes|numeric|min:0'
+                ]);
+        }   
 
         $package->update($validated);
 
@@ -80,6 +79,6 @@ class VisaPackageController extends Controller
                                   ->firstOrFail();
         $package->delete();
 
-        return response()->json(['message' => 'Dependent deleted successfully'], 200);
+        return response()->json(['message' => 'Visa package details deleted successfully'], 200);
     }
 }

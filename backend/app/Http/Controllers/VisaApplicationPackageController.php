@@ -19,11 +19,11 @@ class VisaApplicationPackageController extends Controller
     public function store(Request $request, $applicationId)
     {
         $application = VisaApplication::findOrFail($applicationId);
-        
+
         $validated = $request->validate([
             'package_id' => 'required|exists:visa_packages,package_id',
-            'credit_id'  => 'nullable|exists:message_credit_options,credit_id',
-            'total_price'=> 'required|numeric|min:0',
+            'credit_id' => 'nullable|exists:message_credit_options,credit_id',
+            'total_price' => 'required|numeric|min:0',
         ]);
 
         $appPackage = $application->applicationPackages()->create($validated);
@@ -35,7 +35,7 @@ class VisaApplicationPackageController extends Controller
     public function show($applicationId, $id)
     {
         $package = ApplicationPackage::where('application_id', $applicationId)
-                                     ->findOrFail($id);
+            ->findOrFail($id);
         return response()->json($package, 200);
     }
 
@@ -43,26 +43,25 @@ class VisaApplicationPackageController extends Controller
     public function update(Request $request, $applicationId, $id)
     {
         $package = ApplicationPackage::where('application_id', $applicationId)
-                                     ->findOrFail($id);
+            ->findOrFail($id);
+        if (!$package) {
+            return response()->json(['message' => 'Visa Application package details not found'], 404);
+        }
 
         if ($request->isMethod('put')) {
             // Full update
             $validated = $request->validate([
                 'package_id' => 'required|exists:visa_packages,package_id',
-                'credit_id'  => 'nullable|exists:message_credit_options,credit_id',
-                'total_price'=> 'required|numeric|min:0',
+                'credit_id' => 'nullable|exists:message_credit_options,credit_id',
+                'total_price' => 'required|numeric|min:0',
             ]);
         } else {
             // Partial update
             $validated = $request->validate([
                 'package_id' => 'sometimes|exists:visa_packages,package_id',
-                'credit_id'  => 'nullable|exists:message_credit_options,credit_id',
-                'total_price'=> 'sometimes|numeric|min:0',
+                'credit_id' => 'nullable|exists:message_credit_options,credit_id',
+                'total_price' => 'sometimes|numeric|min:0',
             ]);
-        }
-
-        if (!$package) {
-        return response()->json(['message' => 'Visa Application package details not found'], 404);
         }
 
         $package->update($validated);
@@ -74,9 +73,9 @@ class VisaApplicationPackageController extends Controller
     public function destroy($applicationId, $id)
     {
         $package = ApplicationPackage::where('application_id', $applicationId)
-                                     ->findOrFail($id);
+            ->findOrFail($id);
         $package->delete();
 
-        return response()->json(['message' => 'Deleted successfully'], 200);
+        return response()->json(['message' => 'Visa Application package deleted successfully'], 200);
     }
 }

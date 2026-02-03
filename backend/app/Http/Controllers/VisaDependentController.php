@@ -37,8 +37,8 @@ class VisaDependentController extends Controller
     public function show($applicationId, $dependentId)
     {
         $dependent = VisaDependent::where('application_id', $applicationId)
-                                    ->where('dependent_id', $dependentId)
-                                    ->firstOrFail();
+            ->where('dependent_id', $dependentId)
+            ->firstOrFail();
         return response()->json($dependent, 200);
     }
 
@@ -46,31 +46,30 @@ class VisaDependentController extends Controller
     public function update(Request $request, $applicationId, $dependentId)
     {
         $dependent = VisaDependent::where('application_id', $applicationId)
-                                   ->where('dependent_id', $dependentId)
-                                   ->firstOrFail();
-
-        if ($request->isMethod('put')) {   
-        // Full update: require all fields                       
-        $validated = $request->validate([
-            'full_name' => 'string|max:150',
-            'relationship' => 'in:Partner,Child,Adult Relative',
-            'date_of_birth' => 'date',
-            'nationality' => 'required|string|max:100',
-            'passport_number' => 'required|string|max:50'
-        ]);
-    } else {
-        // PATCH: partial update, only validate provided fields
-        $validated = $request->validate([
-            'full_name' => 'sometimes|max:150',
-            'relationship' => 'sometimes|in:Partner,Child,Adult Relative',
-            'date_of_birth' => 'sometimes|date',
-            'nationality' => 'sometimes|max:100|nullable',
-            'passport_number' => 'sometimes|max:50|nullable'
-        ]);
-    }
-
+            ->where('dependent_id', $dependentId)
+            ->firstOrFail();
         if (!$dependent) {
             return response()->json(['message' => 'Visa dependent details not found'], 404);
+        }
+
+        if ($request->isMethod('put')) {
+            // Full update: require all fields                       
+            $validated = $request->validate([
+                'full_name' => 'string|max:150',
+                'relationship' => 'in:Partner,Child,Adult Relative',
+                'date_of_birth' => 'date',
+                'nationality' => 'required|string|max:100',
+                'passport_number' => 'required|string|max:50'
+            ]);
+        } else {
+            // PATCH: partial update, only validate provided fields
+            $validated = $request->validate([
+                'full_name' => 'sometimes|max:150',
+                'relationship' => 'sometimes|in:Partner,Child,Adult Relative',
+                'date_of_birth' => 'sometimes|date',
+                'nationality' => 'sometimes|max:100|nullable',
+                'passport_number' => 'sometimes|max:50|nullable'
+            ]);
         }
 
         $dependent->update($validated);
@@ -82,10 +81,10 @@ class VisaDependentController extends Controller
     public function destroy($applicationId, $dependentId)
     {
         $dependent = VisaDependent::where('application_id', $applicationId)
-                                    ->where('dependent_id', $id)
-                                    ->firstOrFail();
+            ->where('dependent_id', $dependentId)
+            ->firstOrFail();
         $dependent->delete();
 
-        return response()->json(['message' => 'Dependent deleted successfully'], 200);
+        return response()->json(['message' => 'Visa dependent deleted successfully'], 200);
     }
 }

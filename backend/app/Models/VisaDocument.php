@@ -1,8 +1,11 @@
 <?php
+namespace App\Models;
 
-class SupportingDocument extends Model
+use Illuminate\Database\Eloquent\Model;
+
+class VisaDocument extends Model
 {
-    protected $table = 'documents';
+    protected $table = 'visa_documents';
     protected $primaryKey = 'document_id';
 
     protected $fillable = [
@@ -10,14 +13,19 @@ class SupportingDocument extends Model
         'applicant_type',
         'applicant_id',
         'document_type',
-        'file_name',
-        'file_path',
-        'notes',
-        'uploaded_at',
+        'file_type',
+        'file_data',
+        'notes'
     ];
 
     public function application()
     {
         return $this->belongsTo(VisaApplication::class, 'application_id');
     }
+
+    public function files()
+    {
+        return $this->hasMany(VisaDocumentFile::class, 'document_id');
+    }
+
 }

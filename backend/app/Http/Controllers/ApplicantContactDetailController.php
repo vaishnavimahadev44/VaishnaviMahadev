@@ -18,11 +18,11 @@ class ApplicantContactDetailController extends Controller
     public function store(Request $request, $applicationId)
     {
         $validated = $request->validate([
-            'full_name'             => 'required|string|max:150',
-            'email'                 => 'required|email|max:150',
-            'contact_number'        => 'required|string|max:50',
-            'preferred_contact_time'=> 'required|string|max:50',
-            'additional_notes'      => 'nullable|string|max:65535',
+            'full_name' => 'required|string|max:150',
+            'email' => 'required|email|max:150',
+            'contact_number' => 'required|string|max:50',
+            'preferred_contact_time' => 'required|string|max:50',
+            'additional_notes' => 'nullable|string|max:65535',
         ]);
 
         $validated['application_id'] = $applicationId;
@@ -36,23 +36,37 @@ class ApplicantContactDetailController extends Controller
     public function show($applicationId, $id)
     {
         $contact = ApplicantContactDetail::where('application_id', $applicationId)
-                                         ->findOrFail($id);
+            ->findOrFail($id);
         return response()->json($contact, 200);
     }
 
-    // Update a contact detail
+    // Update a contact detail fully or partially (PUT/PATCH)
     public function update(Request $request, $applicationId, $id)
     {
-        $validated = $request->validate([
-            'full_name'             => 'sometimes|string|max:150',
-            'email'                 => 'sometimes|email|max:150',
-            'contact_number'        => 'sometimes|string|max:50',
-            'preferred_contact_time'=> 'sometimes|string|max:50',
-            'additional_notes'      => 'nullable|string|max:65535',
-        ]);
 
         $contact = ApplicantContactDetail::where('application_id', $applicationId)
-                                         ->findOrFail($id);
+            ->findOrFail($id);
+        if (!$contact) {
+            return response()->json(['message' => 'Applicant contact details not found'], 404);
+        }
+
+        if ($request->isMethod('put')) {
+            $validated = $request->validate([
+                'full_name' => 'required|string|max:150',
+                'email' => 'required|email|max:150',
+                'contact_number' => 'required|string|max:50',
+                'preferred_contact_time' => 'required|string|max:50',
+                'additional_notes' => 'nullable|string|max:65535'
+            ]);
+        } else {
+            $validated = $request->validate([
+                'full_name' => 'sometimes|string|max:150',
+                'email' => 'sometimes|email|max:150',
+                'contact_number' => 'sometimes|string|max:50',
+                'preferred_contact_time' => 'sometimes|string|max:50',
+                'additional_notes' => 'nullable|string|max:65535'
+            ]);
+        }
 
         $contact->update($validated);
 
@@ -63,9 +77,13 @@ class ApplicantContactDetailController extends Controller
     public function destroy($applicationId, $id)
     {
         $contact = ApplicantContactDetail::where('application_id', $applicationId)
-                                         ->findOrFail($id);
+            ->findOrFail($id);
+        if (!$contact) {
+            return response()->json(['message' => 'Applicant contact details not found'], 404);
+        }
+
         $contact->delete();
 
-        return response()->json(['message' => 'Deleted successfully'], 200);
+        return response()->json(['message' => 'Applicant contact details deleted successfully'], 200);
     }
 }

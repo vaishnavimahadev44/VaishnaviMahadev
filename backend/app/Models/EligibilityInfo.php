@@ -1,5 +1,9 @@
 <?php
 
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
 class EligibilityInfo extends Model
 {
     protected $table = 'eligibility_info';

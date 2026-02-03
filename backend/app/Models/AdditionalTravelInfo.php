@@ -1,4 +1,7 @@
 <?php
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
 
 class AdditionalTravelInfo extends Model
 {
@@ -15,7 +18,7 @@ class AdditionalTravelInfo extends Model
         'accommodation_details',
     ];
 
-    public function applicant()
+    public function additionalApplicant()
     {
         return $this->belongsTo(AdditionalApplicant::class, 'additional_applicant_id');
     }

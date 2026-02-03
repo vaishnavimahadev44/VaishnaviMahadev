@@ -21,6 +21,16 @@ class VisaApplication extends Model
         'application_status'
     ];
 
+    protected $casts = [
+        'has_dependents' => 'boolean',
+        'has_deadline' => 'boolean',
+        'has_previous_issues' => 'boolean',
+        'has_previous_uk_visa' => 'boolean',
+        'has_sponsor' => 'boolean',
+        'has_selected_recommended_package' => 'boolean',
+    ];
+
+
     // Relationships
     public function dependents()
     {
@@ -47,11 +57,13 @@ class VisaApplication extends Model
         return $this->hasOne(VisaSponsor::class, 'application_id');
     }
 
-    public function package() {
+    public function package()
+    {
         return $this->hasone(VisaPackage::class, 'application_id');
     }
 
-    public function messageCredits() {
+    public function messageCredits()
+    {
         return $this->hasMany(MessageCreditOption::class, 'application_id');
     }
 
@@ -73,5 +85,35 @@ class VisaApplication extends Model
     public function primaryApplicant()
     {
         return $this->hasOne(PrimaryApplicant::class, 'application_id');
+    }
+
+    public function eligibilityInfo()
+    {
+        return $this->hasOne(EligibilityInfo::class, 'application_id');
+    }
+
+    public function personalInfo()
+    {
+        return $this->hasOne(PersonalInfo::class, 'application_id');
+    }
+
+    public function employmentInfo()
+    {
+        return $this->hasOne(EmploymentInfo::class, 'application_id');
+    }
+
+    public function travelInfo()
+    {
+        return $this->hasOne(TravelInfo::class, 'application_id');
+    }
+
+    public function additionalApplicants()
+    {
+        return $this->hasMany(AdditionalApplicant::class, 'application_id');
+    }
+
+    public function documents()
+    {
+        return $this->hasMany(VisaDocument::class, 'application_id');
     }
 }

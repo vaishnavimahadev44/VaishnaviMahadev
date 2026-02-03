@@ -50,30 +50,32 @@ class VisaSponsorController extends Controller
                                    ->where('sponsor_id', $sponsorId)
                                    ->firstOrFail();
 
-        if ($request->isMethod('put')) {   
+        if (!$sponsor) {
+        return response()->json(['message' => 'Visa sponsor not found'], 404);
+        }
+
+        if ($request->isMethod('put')) {
         // Full update: require all fields                       
         $validated = $request->validate([
-            'sponsor_type'       => 'required|string|max:100',
-            'sponsor_name'      => 'required|string|max:150',
-            'sponsor_email'     => 'required|string|max:150',
-            'sponsor_phone'     => 'required|string|max:50',
-            'sponsor_address' => 'required|string|max:2000',
-            'sponsor_details' => 'nullable|string|max:2000'
+                'sponsor_type'       => 'required|string|max:100',
+                'sponsor_name'      => 'required|string|max:150',
+                'sponsor_email'     => 'required|string|max:150',
+                'sponsor_phone'     => 'required|string|max:50',
+                'sponsor_address' => 'required|string|max:2000',
+                'sponsor_details' => 'nullable|string|max:2000'
         ]);
-    } else {
+        } else {
         // PATCH: partial update, only validate provided fields
         $validated = $request->validate([
-            'sponsor_type'       => 'sometimes|string|max:100',
-            'sponsor_name'      => 'sometimes|string|max:150',
-            'sponsor_email'     => 'sometimes|string|max:150',
-            'sponsor_phone'     => 'sometimes|string|max:50',
-            'sponsor_address' => 'sometimes|string|max:2000',
-            'sponsor_details' => 'sometimes|string|nullable|max:2000'
-        ]);
-    }
-        if (!$sponsor) {
-            return response()->json(['message' => 'Visa sponsor not found'], 404);
+                'sponsor_type'       => 'sometimes|string|max:100',
+                'sponsor_name'      => 'sometimes|string|max:150',
+                'sponsor_email'     => 'sometimes|string|max:150',
+                'sponsor_phone'     => 'sometimes|string|max:50',
+                'sponsor_address' => 'sometimes|string|max:2000',
+                'sponsor_details' => 'sometimes|string|nullable|max:2000'
+            ]);
         }
+
         $sponsor->update($validated);
 
         return response()->json($sponsor, 200);
@@ -85,8 +87,12 @@ class VisaSponsorController extends Controller
         $sponsor = VisaSponsor::where('application_id', $applicationId)
                                   ->where('sponsor_id', $sponsorId)
                                   ->firstOrFail();
+        if (!$sponsor) {
+        return response()->json(['message' => 'Visa sponsor not found'], 404);
+        }
+
         $sponsor->delete();
 
-        return response()->json(['message' => 'Dependent deleted successfully'], 200);
+        return response()->json(['message' => 'Visa sponsor deleted successfully'], 200);
     }
 }

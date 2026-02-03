@@ -43,6 +43,9 @@ class VisaApplicationController extends Controller
     public function update(Request $request, $id)
     {
         $application = VisaApplication::findOrFail($id);
+        if (!$application) {
+            return response()->json(['message' => 'Visa Application details not found'], 404);
+        }
 
         if ($request->isMethod('put')) {
             // Full update: require all fields
@@ -70,9 +73,6 @@ class VisaApplicationController extends Controller
             ]);
         }
     
-        if (!$application) {
-            return response()->json(['message' => 'Visa Application details not found'], 404);
-        }
         $application->update($validated);
 
         return response()->json($application, 200);
@@ -84,7 +84,7 @@ class VisaApplicationController extends Controller
         $application = VisaApplication::findOrFail($id);
         $application->delete();
 
-        return response()->json(['message' => 'Application deleted successfully'], 200);
+        return response()->json(['message' => ' Visa Application deleted successfully'], 200);
     }
 
     

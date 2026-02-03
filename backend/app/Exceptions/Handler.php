@@ -42,11 +42,24 @@ class Handler extends ExceptionHandler
         return parent::render($request, $exception);
     }
 
+
+    /**
+     * Redirect the user to the login screen.
+     */
+    protected function redirectTo($request)
+    {
+        if (!$request->expectsJson()) {
+            return null; // don’t redirect, just return null
+        }
+    }
+
+
+
     /**
      * Handle unauthenticated requests.
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
-        return response()->json(['message' => 'Unauthenticated.'], 401);
+        return response()->json(['error' => 'Unauthenticated.'], 401);
     }
 }

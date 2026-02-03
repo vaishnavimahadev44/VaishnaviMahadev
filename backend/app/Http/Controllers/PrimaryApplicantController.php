@@ -24,9 +24,9 @@ class PrimaryApplicantController extends Controller
     {
         $application = VisaApplication::findOrFail($applicationId);
         $validated = $request->validate([
-            'full_name'      => 'required|string|max:150',
-            'email'          => 'required|email|max:150',
-            'phone_number'   => 'required|string|max:20',
+            'full_name' => 'required|string|max:150',
+            'email' => 'required|email|max:150',
+            'phone_number' => 'required|string|max:20',
         ]);
 
         $applicant = $application->primaryApplicant()->create($validated);
@@ -40,7 +40,7 @@ class PrimaryApplicantController extends Controller
     public function show($applicationId, $id)
     {
         $applicant = PrimaryApplicant::where('application_id', $applicationId)
-                                     ->findOrFail($id);
+            ->findOrFail($id);
         return response()->json($applicant, 200);
     }
 
@@ -51,25 +51,24 @@ class PrimaryApplicantController extends Controller
     public function update(Request $request, $applicationId, $id)
     {
         $applicant = PrimaryApplicant::where('application_id', $applicationId)
-                                     ->findOrFail($id);
-                                     
-        if ($request->isMethod('put')) {
-            $validated = $request->validate([
-                'full_name'      => 'required|string|max:150',
-                'email'          => 'required|email|max:150',
-                'phone_number'   => 'required|string|max:20'
-            ]);
-        } else {
-            $validated = $request->validate([
-                'full_name'      => 'sometimes|string|max:150',
-                'email'          => 'sometimes|email|max:150',
-                'phone_number'   => 'sometimes|string|max:20'
-            ]);
-        }
-
+            ->findOrFail($id);
         if (!$applicant) {
             return response()->json(['message' => 'Primary applicant not found'], 404);
         }
+        if ($request->isMethod('put')) {
+            $validated = $request->validate([
+                'full_name' => 'required|string|max:150',
+                'email' => 'required|email|max:150',
+                'phone_number' => 'required|string|max:20'
+            ]);
+        } else {
+            $validated = $request->validate([
+                'full_name' => 'sometimes|string|max:150',
+                'email' => 'sometimes|email|max:150',
+                'phone_number' => 'sometimes|string|max:20'
+            ]);
+        }
+
         $applicant->update($validated);
 
         return response()->json($applicant, 200);
@@ -81,9 +80,13 @@ class PrimaryApplicantController extends Controller
     public function destroy($applicationId, $id)
     {
         $applicant = PrimaryApplicant::where('application_id', $applicationId)
-                                     ->findOrFail($id);
+            ->findOrFail($id);
+        if (!$applicant) {
+            return response()->json(['message' => 'Primary applicant not found'], 404);
+        }
+
         $applicant->delete();
 
-        return response()->json(['message' => 'Deleted successfully'], 200);
+        return response()->json(['message' => 'Primary applicant deleted successfully'], 200);
     }
 }

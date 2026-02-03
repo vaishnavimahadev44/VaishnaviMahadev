@@ -35,8 +35,8 @@ class VisaDeadlineController extends Controller
     public function show($applicationId, $id)
     {
         $deadline = VisaDeadline::where('application_id', $applicationId)
-                                ->where('deadline_id', $id)
-                                ->firstOrFail();
+            ->where('deadline_id', $id)
+            ->firstOrFail();
         return response()->json($deadline, 200);
     }
 
@@ -44,8 +44,8 @@ class VisaDeadlineController extends Controller
     public function update(Request $request, $applicationId, $id)
     {
         $deadline = VisaDeadline::where('application_id', $applicationId)
-                                ->where('deadline_id', $id)
-                                ->firstOrFail();
+            ->where('deadline_id', $id)
+            ->firstOrFail();
 
         if ($request->isMethod('put')) {
             // Full update
@@ -70,15 +70,15 @@ class VisaDeadlineController extends Controller
 
         return response()->json($deadline, 200);
     }
-    
+
     //delete the visa deadline based on applicationId and deadlineId
     public function destroy($applicationId, $id)
     {
         $deadline = VisaDeadline::where('application_id', $applicationId)
-                                ->where('deadline_id', $id)
-                                ->firstOrFail();
+            ->where('deadline_id', $id)
+            ->firstOrFail();
         $deadline->delete();
 
-        return response()->json(['message' => 'Deadline details deleted successfully'], 200);
+        return response()->json(['message' => 'Visa deadline details deleted successfully'], 200);
     }
 }

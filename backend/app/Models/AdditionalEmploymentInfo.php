@@ -1,34 +1,29 @@
 <?php
 
-class AdditionalApplicant extends Model
+namespace App\Models;
+use Illuminate\Database\Eloquent\Model;
+
+class AdditionalEmploymentInfo extends Model
 {
-    protected $table = 'additional_applicants';
-    protected $primaryKey = 'additional_applicant_id';
-    public $timestamps = false;
+    protected $table = 'additional_employment_info';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
-        'application_id',
-        'full_name',
-        'email',
-        'phone',
-        'date_of_birth',
-        'nationality',
-        'gender',
-        'relationship',
+        'additional_applicant_id',
+        'employer',
+        'job_title',
+        'work_address',
+        'work_phone',
+        'years_at_job',
+        'employment_status',
+        'annual_income_range',
+        'exact_annual_income',
+        'education_level',
+        'english_proficiency'
     ];
 
-    public function application()
+    public function additionalApplicant()
     {
-        return $this->belongsTo(VisaApplication::class, 'application_id');
-    }
-
-    public function employmentInfo()
-    {
-        return $this->hasOne(AdditionalEmploymentInfo::class, 'additional_applicant_id');
-    }
-
-    public function travelInfo()
-    {
-        return $this->hasOne(AdditionalTravelInfo::class, 'additional_applicant_id');
+        return $this->belongsTo(AdditionalApplicant::class, 'application_id');
     }
 }

@@ -48,6 +48,9 @@ class VisaPreviousIssueController extends Controller
         $issueOrRefusalDetails = VisaPreviousIssue::where('application_id', $applicationId)
                                 ->where('issue_id', $id)
                                 ->firstOrFail();
+        if (!$issueOrRefusalDetails) {
+            return response()->json(['message' => 'Visa Issue/Refusal details not found'], 404);
+        }
 
         if ($request->isMethod('put')) {
             // Full update
@@ -69,9 +72,6 @@ class VisaPreviousIssueController extends Controller
             ]);
         }
 
-        if (!$issueOrRefusalDetails) {
-            return response()->json(['message' => 'Visa Issue/Refusal details not found'], 404);
-        }
         $issueOrRefusalDetails->update($validated);
 
         return response()->json($issueOrRefusalDetails, 200);
@@ -85,6 +85,6 @@ class VisaPreviousIssueController extends Controller
                                 ->firstOrFail();
         $issueOrRefusalId->delete();
 
-        return response()->json(['message' => 'issueOrRefusal details deleted successfully'], 200);
+        return response()->json(['message' => 'Visa Issue/Refusal details deleted successfully'], 200);
     }
 }
